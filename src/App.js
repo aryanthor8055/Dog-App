@@ -2,10 +2,12 @@ import logo from './logo.svg';
 import './App.css';
 import DogList from './DogList';
 import {Switch,Route} from 'react-router-dom'
+import DogDetail from './DogDetail';
 import whiskey from "./Images/whiskey.jpg"
 import tubby from "./Images/tubby.jpg"
 import hazel from "./Images/hazel.jpg"
 import { Component } from 'react';
+import Navbar from './Navbar';
 
 
 class  App extends Component{
@@ -44,8 +46,21 @@ class  App extends Component{
     ]
   };
   render(){
+    const getDog=props=>{
+      let name=props.match.params.name;
+      let currentDog=this.props.dogs.find(
+        dog=>dog.name.toLowerCase()===name.toLowerCase()
+      )
+      return <DogDetail {...props} dog={currentDog}/>
+    }
     return (
-      <Route path='/dogs' render={()=><DogList dogs={this.props.dogs}/>}/>
+      <div>
+        <Navbar dogs={this.props.dogs}/>
+      <Switch>
+      <Route exact path='/dogs' render={()=><DogList dogs={this.props.dogs}/>}/>
+      <Route exact path='/dogs/:name' render={getDog}/>
+      </Switch>
+      </div>
     );
   }
  
